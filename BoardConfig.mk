@@ -55,8 +55,6 @@ MAX_VIRTUAL_DISPLAY_DIMENSION := 2048
 
 BOARD_USES_ALSA_AUDIO := true
 
-BOARD_SUPPORTS_SOUND_TRIGGER := true
-
 # Wifi related defines
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WLAN_DEVICE           := bcmdhd
@@ -72,12 +70,17 @@ WIFI_BUS := PCIE
 
 #Bluetooth defines
 BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_CUSTOM_BT_CONFIG := hardware/broadcom/libbt/include/vnd_shamu.txt
+BOARD_CUSTOM_BT_CONFIG := device/moto/shamu/bluetooth/vnd_shamu.txt
 ifeq ($(TARGET_PRODUCT),bt_shamu)
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/moto/shamu_t/bluetooth_extra
 else
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/moto/shamu_t/bluetooth
 endif
+
+TARGET_USES_HWC2 := true
+SF_START_GRAPHICS_ALLOCATOR_SERVICE := true
+VSYNC_EVENT_PHASE_OFFSET_NS := 2000000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 6000000
 
 TARGET_NO_RADIOIMAGE := true
 TARGET_BOARD_PLATFORM := msm8084
@@ -86,7 +89,13 @@ TARGET_NO_RPC := true
 
 TARGET_BOARD_INFO_FILE := device/moto/shamu_t/board-info.txt
 
+# Render
 USE_OPENGL_RENDERER := true
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+TARGET_USES_GRALLOC1 := true
+TARGET_USES_HWC2 := true
+TARGET_USES_NEW_ION_API :=true
 TARGET_USES_ION := true
 TARGET_HW_DISK_ENCRYPTION := false
 TARGET_CRYPTFS_HW_PATH := device/moto/shamu_t/cryptfs_hw
@@ -118,7 +127,6 @@ BOARD_SEPOLICY_DIRS += device/moto/shamu_t/sepolicy
 
 HAVE_ADRENO_SOURCE:= false
 
-OVERRIDE_RS_DRIVER:= libRSDriver_adreno.so
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
@@ -132,11 +140,13 @@ BOARD_HAL_STATIC_LIBRARIES := libdumpstate.shamu
 
 USE_CLANG_PLATFORM_BUILD := true
 
-# Include an expanded selection of fonts
-EXTENDED_FONT_FOOTPRINT := true
-
 # Disable dex-preopt of prebuilts to save space.
 DONT_DEXPREOPT_PREBUILTS := true
+
+# Qualcomm Time Services
+BOARD_USES_QC_TIME_SERVICES := true
+
+TARGET_FS_CONFIG_GEN += device/moto/shamu/config.fs
 
 # CMHW
 BOARD_USES_CYANOGEN_HARDWARE := true
